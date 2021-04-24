@@ -1,0 +1,23 @@
+version: '3.7'
+
+services:
+  web:
+#    build: .
+#    restart: always
+    image: odoo-rubikx:latest
+    container_name: odoo
+    ports:
+    - "9069:8069"
+    volumes:
+    - .:/usr/src/app
+    - ./config/odoo.conf:/etc/odoo.conf
+    - ./addons:/mnt/addons
+    - ./addons2:/mnt/extra-addons
+    - ${DATA_DIR_ROOT}/odoo14/${STORE_NAME}/filestore:/var/lib/odoo/filestore/${STORE_NAME}
+    - ${DATA_DIR_ROOT}/odoo14/${STORE_NAME}/sessions:/var/lib/odoo/sessions
+    command: sh -c "python usr/src/app/odoo-bin -c /etc/odoo.conf --xmlrpc-port 8069"
+
+networks:
+  default:
+    external:
+      name: rubikx-store-nw
